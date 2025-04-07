@@ -1,0 +1,64 @@
+.custom-tabs-collections {
+    position: relative;
+}
+
+.custom-tabs__wrapper {
+    display: flex;
+    gap: 40px;
+}
+
+.custom-tabs__header {
+    max-width: 300px;
+    flex: 0 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.title-section-tabs {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 5%;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+    color: #2B2424;
+}
+
+.tab-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 12px 4px 4px;
+    cursor: pointer;
+    border-radius: 11px;
+    width: fit-content;
+}
+
+.tab-label[aria-selected="true"] {
+    background-color: #FCF5F0;
+}
+
+.tab-label__image {
+    width: 52px;
+    height: 52px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.tab-label__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tab-label__title {
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    line-height: 26px;
+    font-weight: 500;
+    color: #2B2424;
+    text-transform: uppercase;
+}

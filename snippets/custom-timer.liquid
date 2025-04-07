@@ -1,0 +1,50 @@
+{% assign timer_date = time | default: 'Jun 17, 2024 14:38:00' %}
+{% assign timer_text = timer_text | default: 'Big Sale' %}
+{% assign timer_subtext = timer_subtext | default: 'Hurry up and buy the products of your dreams at lower prices' %}
+{% assign end_link = end_link | default: '#' %}
+{% assign end_link_text = end_link_text | default: 'Shop Now' %}
+{% assign end_text = end_text | default: 'Sale has ended!' %}
+
+{%- if timer_image and timer_image.value != blank -%}
+    {% assign timer_image_url = timer_image.value | img_url: 'medium' %}
+{%- else -%}
+    {% assign timer_image_url = 'https://via.placeholder.com/300x400' %}
+{%- endif -%}
+
+<countdown-timer class="countdown-timer">
+    <div class="countdown-timer__timer" data-time="{{ timer_date }}">
+        <div class="timer">
+            <div class="timer__image">
+                <img src="{{ timer_image_url }}" alt="Timer Image" loading="lazy">
+            </div>
+            <div class="timer__content">
+                <div class="timer__text">
+                    <h2>{{ timer_text }}</h2>
+                    <p>{{ timer_subtext }}</p>
+                </div>
+                <div class="timer__counter">
+                    <div class="timer__unit">
+                        <span class="timer__value timer__days"></span>
+                        <span class="timer__label">Days</span>
+                    </div>
+                    <div class="timer__unit">
+                        <span class="timer__value timer__hours"></span>
+                        <span class="timer__label">Hours</span>
+                    </div>
+                    <div class="timer__unit">
+                        <span class="timer__value timer__minutes"></span>
+                        <span class="timer__label">Minutes</span>
+                    </div>
+                    <div class="timer__unit">
+                        <span class="timer__value timer__seconds"></span>
+                        <span class="timer__label">Seconds</span>
+                    </div>
+                </div>
+                <a href="{{ end_link }}" class="timer__button">{{ end_link_text }}</a>
+            </div>
+        </div>
+        <div class="timer__end-block is-hidden">
+            {{ end_text }} <a class="link end-block__link" href="{{ end_link }}">{{ end_link_text }}<span></span></a>
+        </div>
+    </div>
+</countdown-timer>

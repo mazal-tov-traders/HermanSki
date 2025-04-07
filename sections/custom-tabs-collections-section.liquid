@@ -1,0 +1,529 @@
+{{ 'custom-curd-product.css' | asset_url | stylesheet_tag }}
+{{ 'custom-tabs-collections.css' | asset_url | stylesheet_tag }}
+{{ 'custom-tabs.css' | asset_url | stylesheet_tag }}
+{{ 'custom-slider.css' | asset_url | stylesheet_tag }}
+{{ 'custom-timer.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  @media screen and (max-width: 786px) {
+    .section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top-mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom-mobile }}px;{
+    }
+  }
+</style>
+
+<div class="section-{{ section.id }} custom-tabs-collections">
+  <div class="page-width">
+    <custom-tabs>
+      <div class="custom-tabs__header">
+        {% if section.settings.title != blank %}
+          <h2 class="title-section-tabs">{{ section.settings.title }}</h2>
+        {% endif %}
+        <div class="custom-tabs__inner">
+          {% for block in section.blocks %}
+            {% assign collection = block.settings.collection %}
+            <div
+              class="tab-label"
+              role="tab"
+              {% if forloop.index == 1 %}
+              aria-selected="true"
+              {% endif %}
+              id="tab{{ forloop.index }}">
+              {% if collection.image %}
+                <div class="tab-label__image">
+                  <img
+                    src="{{ collection.image | image_url: width: 52 }}"
+                    alt="{{ collection.title }}"
+                    loading="lazy" />
+                </div>
+              {% endif %}
+              <span class="tab-label__title">{{ collection.title }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="products-inner">
+        {% for block in section.blocks %}
+          {% assign collection = block.settings.collection %}
+          <div
+            role="tabcontent"
+            aria-labelledby="tab{{ forloop.index }}"
+            class="custom-tab__content">
+            {% if section.settings.enable_slider %}
+              <div class="custom-tab__content-slider mobile-only">
+                <component-slider-swiper>
+                  <swiper-container
+                    init="false"
+                    data-options='
+                    {
+                      "slidesPerView": 1.3,
+                      "spaceBetween": 16,
+                      "slidesOffsetAfter": 0,
+                      "slidesOffsetBefore": 0,
+                      "breakpoints": {
+                        "575": {
+                          "slidesPerView": 2,
+                          "spaceBetween": 16,
+                          "slidesOffsetAfter": 0,
+                          "slidesOffsetBefore": 0
+                        }
+                      }
+                    }
+                  '
+                    style="width: 100%;">
+                    {% for product in collection.products limit: section.settings.limit %}
+                      <swiper-slide>
+                        <div class="product-card {% if product.available == false %}product-card--out-of-stock{% endif %}">
+
+                          <script type="application/json" class="card__content-resource">
+                                                      {
+                            "id": "{{ product.id }}",
+                            "title": "{{ product.title | escape }}",
+                            "price": "{{ product.price | money }}",
+                            "comparePrice": "{{ product.compare_at_price | money }}",
+                            "url": "{{ product.url }}",
+                            "featured_media": "{{ product.featured_image | image_url: width: 400 }}",
+                            "description": "{{ product.description | strip_html | truncate: 100 }}",
+                            "variant_id": "{{ product.selected_or_first_available_variant.id }}",
+                            "vendor": "{{ product.vendor | escape }}",
+                            "tags": [
+                              {% for tag in product.tags %}
+                                "{{ tag | capitalize }}"{% unless forloop.last %},{% endunless %}
+                              {% endfor %}
+                            ],
+                            "rating": "{{ product.metafields.custom.rating.value | default: 0 }}",
+                            "reviews_count": "{{ product.metafields.custom.reviews_count | default: 0 }}",
+                                                      "badge_image": {% if product.metafields.custom.badge_image %}"{{ product.metafields.custom.badge_image | img_url: 'small' }}"{% else %}""{% endif %}
+                                                      }
+                          </script>
+                          {% if product.metafields.custom.badge_image %}
+                            <div class="product-badge">
+                              <img src="{{ product.metafields.custom.badge_image | img_url: 'small' }}" alt="Product badge">
+                            </div>
+                          {% endif %}
+
+                          <div class="product-card__tags">
+                            {% for tag in product.tags %}
+                              <span class="product-card__tag {% if tag == 'sale' %}product-card__tag--sale{% endif %}">
+                                {{ tag | capitalize }}
+                              </span>
+                            {% endfor %}
+                          </div>
+                          <div class="product-card__image-wrapper">
+                            <img
+                              src="{{ product.featured_image | image_url: width: 400 }}"
+                              alt="{{ product.title }}"
+                              class="product-card__image"
+                              loading="lazy" />
+
+                            <button class="product-card__quick-view">
+                              QUICK VIEW
+                            </button>
+                          </div>
+
+                          <div class="product-card__content">
+                            <div class="product-card__vendor">
+                              {{ product.vendor }}
+                            </div>
+
+                            <h3 class="product-card__title">
+                              {{ product.title }}
+                            </h3>
+
+                            <p class="product-card__description">
+                              {{ product.description | strip_html | truncate: 100 }}
+                            </p>
+
+                            <div class="product-card__footer">
+                              <div class="product-card__price">
+                                {% if product.compare_at_price > product.price %}
+                                  <span class="product-card__price--old">
+                                    {{ product.compare_at_price | money }}
+                                  </span>
+                                {% endif %}
+                                <span class="product-card__price--current">
+                                  {{ product.price | money }}
+                                </span>
+                              </div>
+
+                              {% assign rating = product.metafields.custom.rating.value %}
+                              {% if rating %}
+                                <div class="product-card__rating">
+                                  <div class="product-card__rating-stars_inner">
+                                    {% for i in (1..5) %}
+                                      {% if i <= rating %}
+                                        <span class="product-card__rating-star product-card__rating-star--filled">{% render 'rating-star-filled' %}</span>
+                                      {% else %}
+                                        <span class="product-card__rating-star">
+                                          {%- render 'rating-star' -%}</span>
+                                      {% endif %}
+                                    {% endfor %}
+                                  </div>
+                                  <span class="product-card__rating-count">{{ product.metafields.custom.reviews_count }} REVIEWS</span>
+                                </div>
+                              {% endif %}
+                            </div>
+                          </div>
+                        </div>
+                      </swiper-slide>
+                    {% endfor %}
+                  </swiper-container>
+                  <div class="custom-pagination"></div>
+                </component-slider-swiper>
+              </div>
+            {% endif %}
+
+
+            <div class="custom-tab__content-grid {% if section.settings.enable_slider %}desktop-only{% endif %}">
+              {% for product in collection.products limit: section.settings.limit %}
+                <div class="product-card {% if product.available == false %}product-card--out-of-stock{% endif %}">
+                  <script type="application/json" class="card__content-resource">
+                    {
+                      "id": "{{ product.id }}",
+                      "title": "{{ product.title | escape }}",
+                      "price": "{{ product.price | money }}",
+                      "comparePrice": "{{ product.compare_at_price | money }}",
+                      "url": "{{ product.url }}",
+                      "featured_media": "{{ product.featured_image | image_url: width: 400 }}",
+                      "description": "{{ product.description | strip_html | truncate: 100 }}",
+                      "variant_id": "{{ product.selected_or_first_available_variant.id }}",
+                      "vendor": "{{ product.vendor | escape }}",
+                      "tags": [
+                        {% for tag in product.tags %}
+                          "{{ tag | capitalize }}"{% unless forloop.last %},{% endunless %}
+                        {% endfor %}
+                      ],
+                      "rating": "{{ product.metafields.custom.rating.value | default: 0 }}",
+                      "reviews_count": "{{ product.metafields.custom.reviews_count | default: 0 }}",
+                    "badge_image": {% if product.metafields.custom.badge_image %}"{{ product.metafields.custom.badge_image | img_url: 'small' }}"{% else %}""{% endif %}
+                    }
+                  </script>
+                  {% if product.metafields.custom.badge_image %}
+                    <div class="product-badge">
+                      <img src="{{ product.metafields.custom.badge_image | img_url: 'small' }}" alt="Product badge">
+                    </div>
+                  {% endif %}
+                  <div class="product-card__tags">
+                    {% for tag in product.tags %}
+                      <span class="product-card__tag {% if tag == 'sale' %}product-card__tag--sale{% endif %}">
+                        {{ tag | capitalize }}
+                      </span>
+                    {% endfor %}
+                  </div>
+                  <div class="product-card__image-wrapper">
+                    <img
+                      src="{{ product.featured_image | image_url: width: 400 }}"
+                      alt="{{ product.title }}"
+                      class="product-card__image"
+                      loading="lazy" />
+
+                    <button class="product-card__quick-view">
+                      QUICK VIEW
+                    </button>
+                  </div>
+                  <div class="product-card__content">
+                    <div class="product-card__vendor">
+                      {{ product.vendor }}
+                    </div>
+
+                    <h3 class="product-card__title">
+                      {{ product.title }}
+                    </h3>
+
+                    <p class="product-card__description">
+                      {{ product.description | strip_html | truncate: 100 }}
+                    </p>
+
+                    <div class="product-card__footer">
+                      <div class="product-card__price">
+                        {% if product.compare_at_price > product.price %}
+                          <span class="product-card__price--old">
+                            {{ product.compare_at_price | money }}
+                          </span>
+                        {% endif %}
+                        <span class="product-card__price--current">
+                          {{ product.price | money }}
+                        </span>
+                      </div>
+
+                      {% assign rating = product.metafields.custom.rating.value %}
+                      {% if rating %}
+                        <div class="product-card__rating">
+                          <div class="product-card__rating-stars_inner">
+                            {% for i in (1..5) %}
+                              {% if i <= rating %}
+                                <span class="product-card__rating-star product-card__rating-star--filled">{% render 'rating-star-filled' %}</span>
+                              {% else %}
+                                <span class="product-card__rating-star">
+                                  {%- render 'rating-star' -%}</span>
+                              {% endif %}
+                            {% endfor %}
+                          </div>
+                          <span class="product-card__rating-count">{{ product.metafields.custom.reviews_count }} REVIEWS</span>
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+              {% if collection.metafields.custom.timer != blank%}
+              {% render 'custom-timer',
+                time: collection.metafields.custom.timer,
+                timer_text: 'Big Sale',
+                timer_subtext: 'Hurry up and buy the products of your dreams at lower prices',
+                end_link: collection.url,
+                end_link_text: 'Shop Now',
+                end_text: 'Sale has ended!',
+                timer_image: collection.metafields.custom.timer_image 
+              %}
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+
+        <div
+          class="buy-now-curd-product"
+          id="quick-view-modal-{{ section.id }}"
+          style="display: none;">
+          <div class="inner-btn">
+            <button class="quick-view-close" aria-label="Close">{% render 'custom-icon-close' %}</button>
+
+            <div class="quick-view-main">
+              <div class="quick-view-image">
+                <img
+                  src=""
+                  alt=""
+                  class="quick-view-product-image"
+                  data-image>
+                <img
+                  src=""
+                  alt="Product badge"
+                  class="quick-view-badge"
+                  data-badge
+                  style="display: none;">
+              </div>
+
+              <div class="quick-view-details">
+                <div class="quick-view_tags-wrapper">
+                  <div class="quick-view-tags" data-tags></div>
+
+                  <div class="quick-view-rating">
+                    <span class="rating-stars" data-rating-stars></span>
+                    <span class="review-count" data-reviews-count></span>
+                  </div>
+                </div>
+                <div class="quick-view-vendor" data-vendor></div>
+                <h3 class="quick-view-title" data-title></h3>
+
+                <p class="quick-view-description" data-description></p>
+
+                <div class="quick-view-price-wrapper">
+                  <span
+                    class="quick-view-price-old"
+                    data-compare-price
+                    style="display: none;"></span>
+                  <span class="quick-view-price" data-price></span>
+                </div>
+
+                <product-form
+                  class="product-form"
+                  data-hide-errors="false"
+                  data-section-id="{{ section.id }}">
+                  <form
+                    method="post"
+                    action="/cart/add"
+                    accept-charset="UTF-8"
+                    class="form"
+                    enctype="multipart/form-data"
+                    novalidate="novalidate"
+                    data-type="add-to-cart-form">
+                    <input
+                      type="hidden"
+                      name="form_type"
+                      value="product">
+                    <input
+                      type="hidden"
+                      name="utf8"
+                      value="✓">
+                    <input
+                      type="hidden"
+                      name="id"
+                      class="product-variant-id"
+                      value="">
+                    <input
+                      type="hidden"
+                      name="product-id"
+                      value="">
+                    <input
+                      type="hidden"
+                      name="section-id"
+                      value="{{ section.id }}">
+
+                    <div class="quick-view-form-wrapper">
+                      <quantity-input class="quantity">
+                        <button
+                          class="quantity__button"
+                          name="minus"
+                          type="button"
+                          aria-label="Decrease quantity">
+                          {% render 'icon-minus' %}
+                        </button>
+                        <input
+                          class="quantity__input"
+                          type="number"
+                          name="quantity"
+                          id="Quantity-{{ section.id }}"
+                          min="1"
+                          value="1"
+                          data-quantity-input>
+                        <button
+                          class="quantity__button"
+                          name="plus"
+                          type="button"
+                          aria-label="Increase quantity">
+                          {% render 'icon-plus' %}
+                        </button>
+                      </quantity-input>
+
+                      <div class="product-form__buttons">
+                        <button
+                          type="submit"
+                          name="add"
+                          class="product-form__submit button button--full-width button--primary"
+                          aria-haspopup="dialog">
+                          <span>Add to cart</span>
+                          <div class="loading__spinner hidden">
+                            {{ 'loading-spinner.svg' | inline_asset_content }}
+                          </div>
+                        </button>
+                        <a
+                          href="#"
+                          class="custom-quick-view-more-details custom-button"
+                          data-product-url>
+                          <span>More details</span>
+                        </a>
+                      </div>
+                    </div>
+
+                    <div
+                      class="product-form__error-message-wrapper"
+                      role="alert"
+                      hidden>
+                      <span class="svg-wrapper">
+                        {{- 'icon-error.svg' | inline_asset_content -}}
+                      </span>
+                      <span class="product-form__error-message"></span>
+                    </div>
+                  </form>
+                </product-form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </custom-tabs>
+  </div>
+</div>
+
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'custom-timer.js' |  asset_url }}" defer="defer"></script>
+<script src="{{ 'custom-tabs.js' |  asset_url }}" defer="defer"></script>
+<script src="{{ 'custom-modal-product.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'custom-slider.js' |  asset_url }}" defer="defer"></script>
+
+{% schema %}
+  {
+    "name": "Custom collections tabs",
+    "tag": "section",
+    "class": "custom__collections-tabs",
+    "limit": 1,
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Title section"
+      },
+      {
+        "type": "range",
+        "id": "limit",
+        "min": 1,
+        "max": 20,
+        "step": 1,
+        "label": "Limit of products to display",
+        "default": 8
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_slider",
+        "label": "Enable slider on mobile",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "t:sections.all.padding.section_padding_heading"
+      }, {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "t:sections.all.padding.padding_top",
+        "default": 50
+      }, {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "t:sections.all.padding.padding_bottom",
+        "default": 50
+      }, {
+        "type": "range",
+        "id": "padding_top-mobile",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Padding top mobile",
+        "default": 50
+      }, {
+        "type": "range",
+        "id": "padding_bottom-mobile",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Padding bottom mobile",
+        "default": 50
+      }
+    ],
+    "blocks": [
+      {
+        "type": "tab",
+        "name": "Collection tab",
+        "settings": [
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Custom collections tabs"
+      }
+    ]
+  }
+{% endschema %}

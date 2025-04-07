@@ -1,0 +1,434 @@
+custom-tabs {
+    display: flex;
+    justify-content: space-between;
+    gap: 97px;
+}
+
+.custom-tabs-collections .page-width {
+    max-width: 1561px;
+    width: 100%;
+}
+
+.custom-tabs-collections {
+    position: relative;
+}
+
+.custom-tab__content-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 60px 30px;
+    margin-bottom: 60px;
+}
+
+@media screen and (max-width: 1450px) {
+    custom-tabs {
+
+        gap: 40px;
+    }
+}
+
+@media screen and (max-width: 1350px) {
+    .custom-tab__content-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    custom-tabs {
+        gap: 20px;
+    }
+
+    custom-tabs .custom-tabs__header {
+        max-width: 200px;
+    }
+}
+
+@media screen and (max-width: 950px) {
+    custom-tabs {
+        flex-direction: column;
+    }
+
+    custom-tabs .custom-tabs__header {
+        max-width: 100%;
+    }
+
+    .custom-tabs__inner {
+        display: flex;
+        gap: 8px;
+        overflow-y: auto;
+    }
+}
+
+@media screen and (max-width: 575px) {
+    .custom-tab__content-grid {
+        grid-template-columns: 1fr;
+        margin-bottom: 32px;
+    }
+}
+
+
+.custom-tab__content-slider {
+    display: none;
+}
+
+@media screen and (max-width: 786px) {
+    .custom-tab__content-slider {
+        display: block;
+    }
+}
+
+.mobile-only {
+    display: none;
+}
+
+@media screen and (max-width: 786px) {
+    .mobile-only {
+        display: block;
+    }
+
+    .desktop-only {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 787px) {
+    .desktop-only {
+        display: grid;
+    }
+
+    .mobile-only {
+        display: none;
+    }
+}
+
+.buy-now-curd-product {
+    all: unset;
+    background: #F7F6F5;
+    border-radius: 20px;
+    width: 100%;
+}
+
+.inner-btn {
+    position: relative;
+}
+
+.quick-view-main {
+    display: flex;
+    justify-content: space-between;
+}
+
+.quick-view-close {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    padding: 0;
+    z-index: 11;
+}
+
+.quick-view-image {
+    position: relative;
+    max-width: 480px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.quick-view-product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.quick-view-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    max-width: 50px;
+}
+
+.quick-view-details {
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+}
+
+.quick-view_tags-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.quick-view-tags {
+    display: flex;
+    gap: 5px;
+}
+
+.quick-view-tag {
+    background: #8FA9A6;
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 12px;
+    font-size: 30px;
+    text-transform: uppercase;
+    font-family: 'Manrope';
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 100%;
+    text-transform: uppercase;
+
+}
+
+.quick-view-rating {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rating-stars {
+    display: flex;
+    align-items: center;
+}
+
+.product-card__rating-star {
+    width: 18px;
+    height: 23px;
+
+}
+
+.review-count {
+    font-family: 'Manrope';
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #8E8385;
+}
+
+.quick-view-vendor {
+    color: #685A5C;
+    text-transform: uppercase;
+    font-family: 'Test Tiempos Headline';
+    font-weight: 400;
+    font-style: italic;
+    font-size: 14px;
+}
+
+.quick-view-title {
+    font-family: 'Manrope';
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #2B2424;
+    margin: 0 0 20px 0;
+}
+
+.quick-view-description {
+    font-family: 'Manrope';
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0%;
+    color: #8E8385;
+    margin: 0 0 20px 0;
+
+}
+
+.quick-view-price-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.quick-view-price-old {
+    font-family: 'Manrope';
+    font-weight: 700;
+    font-size: 16.15px;
+    text-transform: uppercase;
+    color: #B3ADAD;
+}
+
+.quick-view-price {
+    font-family: 'Manrope';
+    font-weight: 600;
+    font-size: 16.15px;
+    text-transform: uppercase;
+    color: #685A5C;
+}
+
+.quick-view-form-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 71px;
+    margin-top: 0px;
+}
+
+
+.buy-now-curd-product .quantity {
+    position: inherit;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    border: 1px solid #DAD7D7;
+    border-radius: 5px;
+    overflow: hidden;
+    width: fit-content;
+}
+
+.buy-now-curd-product .quantity__button svg {
+    pointer-events: none;
+}
+
+.buy-now-curd-product .quantity__button {
+    background: #685A5C;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.quantity__button:hover {
+    background: #e0e0e0;
+}
+
+.quantity__input {
+    width: 40px;
+    text-align: center;
+    border: none;
+    padding: 3px 16px;
+    font-size: 16px;
+    border-left: 1px solid #ECEAEB;
+    border-right: 1px solid #ECEAEB;
+    -moz-appearance: textfield;
+    color: #685A5C;
+    font-family: 'Manrope';
+    font-weight: 600;
+    font-size: 16.15px;
+    text-transform: uppercase;
+
+}
+
+.quantity__input::-webkit-outer-spin-button,
+.quantity__input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.buy-now-curd-product .quantity {
+    position: relative;
+
+}
+
+.buy-now-curd-product .quantity::before,
+.buy-now-curd-product .quantity::after {
+    content: none !important;
+}
+
+.product-form__buttons {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.buy-now-curd-product .button {
+    padding: 14.5px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 4px;
+    border: none;
+    background: #C56F5C;
+    color: #fff;
+    font-family: 'Manrope';
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    width: 60%;
+
+}
+
+.buy-now-curd-product .button::before,
+.buy-now-curd-product .button::after {
+    display: none !important;
+    content: none !important;
+}
+
+.buy-now-curd-product .custom-button {
+    padding: 14.5px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 4px;
+    border: none;
+    font-family: 'Manrope';
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.buy-now-curd-product .custom-quick-view-more-details {
+    border: 1px solid #DAD7D7;
+    background: transparent;
+    color: #908486;
+    width: fit-content;
+}
+
+@media (max-width: 990px) {
+    .quick-view-main {
+        flex-direction: column;
+    }
+
+    .quick-view-image {
+        max-width: 100%;
+    }
+
+    .quick-view-form-wrapper {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .quick-view-image {
+        max-width: 100%;
+        height: 300px;
+    }
+
+    .quick-view-details {
+        padding: 10px 0;
+    }
+
+    .product-form__buttons {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .quick-view-image {
+        height: 200px;
+    }
+
+    .quick-view-title {
+        font-size: 18px;
+    }
+
+    .quick-view-price {
+        font-size: 16px;
+    }
+
+    .quantity__input {
+        width: 30px;
+        font-size: 14px;
+    }
+
+    .quantity__button {
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+}
