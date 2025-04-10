@@ -35,6 +35,7 @@
         "heading",
         "button"
       ],
+      "disabled": true,
       "settings": {
         "image_overlay_opacity": 40,
         "image_height": "large",
@@ -50,6 +51,7 @@
     },
     "featured_collection": {
       "type": "featured-collection",
+      "disabled": true,
       "settings": {
         "collection": "all",
         "products_to_show": 8,
@@ -79,10 +81,10 @@
     "custom_tabs_collections_section_FzMrG8": {
       "type": "custom-tabs-collections-section",
       "blocks": {
-        "tab_LGfzDp": {
+        "tab_XhcJTn": {
           "type": "tab",
           "settings": {
-            "collection": "haircare"
+            "collection": "frontpage"
           }
         },
         "tab_7k9wth": {
@@ -90,14 +92,37 @@
           "settings": {
             "collection": "skincare"
           }
+        },
+        "tab_LGfzDp": {
+          "type": "tab",
+          "settings": {
+            "collection": "haircare"
+          }
+        },
+        "tab_pH8Gay": {
+          "type": "tab",
+          "settings": {
+            "collection": "body-care"
+          }
+        },
+        "tab_zCBJeE": {
+          "type": "tab",
+          "settings": {
+            "collection": "makeup"
+          }
         }
       },
       "block_order": [
+        "tab_XhcJTn",
+        "tab_7k9wth",
         "tab_LGfzDp",
-        "tab_7k9wth"
+        "tab_pH8Gay",
+        "tab_zCBJeE"
       ],
       "settings": {
-        "title": "Title section",
+        "title": "by collection",
+        "limit": 14,
+        "enable_slider": true,
         "padding_top": 50,
         "padding_bottom": 50,
         "padding_top-mobile": 50,

@@ -54,7 +54,10 @@
           <div
             role="tabcontent"
             aria-labelledby="tab{{ forloop.index }}"
-            class="custom-tab__content">
+            class="custom-tab__content"
+            hidden
+            data-tab-index="{{ forloop.index }}"
+            data-handle="{{ collection.handle }}">
             {% if section.settings.enable_slider %}
               <div class="custom-tab__content-slider mobile-only">
                 <component-slider-swiper>
@@ -174,11 +177,9 @@
                       </swiper-slide>
                     {% endfor %}
                   </swiper-container>
-                  <div class="custom-pagination"></div>
                 </component-slider-swiper>
               </div>
             {% endif %}
-
 
             <div class="custom-tab__content-grid {% if section.settings.enable_slider %}desktop-only{% endif %}">
               {% for product in collection.products limit: section.settings.limit %}
@@ -272,17 +273,17 @@
                   </div>
                 </div>
               {% endfor %}
-              {% if collection.metafields.custom.timer != blank%}
-              {% render 'custom-timer',
-                time: collection.metafields.custom.timer,
-                timer_text: 'Big Sale',
-                timer_subtext: 'Hurry up and buy the products of your dreams at lower prices',
-                end_link: collection.url,
-                end_link_text: 'Shop Now',
-                end_text: 'Sale has ended!',
-                timer_image: collection.metafields.custom.timer_image 
-              %}
-              {% endif %}
+               {% if collection.metafields.custom.timer != blank and collection.metafields.custom.timer_image != blank %}
+                {% render 'custom-timer',
+                  time: collection.metafields.custom.timer,
+                  timer_text: 'Big Sale',
+                  timer_subtext: 'Hurry up and buy the products of your dreams at lower prices',
+                  end_link: collection.url,
+                  end_link_text: 'Shop Now',
+                  end_text: 'Sale has ended!',
+                  timer_image: collection.metafields.custom.timer_image 
+                %}
+              {% endif %}  
             </div>
           </div>
         {% endfor %}
@@ -426,17 +427,150 @@
             </div>
           </div>
         </div>
-
+       
+        <div class="custom-timers-wrapper">
+          {% for block in section.blocks %}
+            {% assign collection = block.settings.collection %}
+              {% if collection.metafields.custom.timer != blank %}
+                <div
+                class="custom-timer-block"
+                data-handle="{{ collection.handle }}"
+                hidden>
+                  {% render 'custom-timer',
+                    time: collection.metafields.custom.timer,
+                    timer_text: 'Big Sale',
+                    timer_subtext: 'Hurry up and buy the products of your dreams at lower prices',
+                    end_link: collection.url,
+                    end_link_text: 'Shop Now',
+                    end_text: 'Sale has ended!',
+                    timer_image: collection.metafields.custom.timer_image 
+                  %}
+                </div>
+              {% endif %}
+            {% endfor %}
+        </div>
       </div>
     </custom-tabs>
   </div>
 </div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const quickViewButtons = document.querySelectorAll('.product-card__quick-view');
+    const modal = document.querySelector('.buy-now-curd-product');
+    const closeButton = modal.querySelector('.quick-view-close');
 
-<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+    quickViewButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const productCard = button.closest('.product-card');
+            const jsonData = productCard.querySelector('.card__content-resource');
+            const productData = JSON.parse(jsonData.textContent);
+
+            modal.querySelector('.quick-view-product-image').src = productData.featured_media;
+            modal.querySelector('.quick-view-product-image').alt = productData.title;
+
+            const badge = modal.querySelector('.quick-view-badge');
+            if (productData.badge_image) {
+                badge.src = productData.badge_image;
+                badge.style.display = 'block';
+            } else {
+                badge.style.display = 'none';
+            }
+
+            modal.querySelector('.quick-view-vendor').textContent = productData.vendor;
+            modal.querySelector('.quick-view-title').textContent = productData.title;
+
+            const tagsContainer = modal.querySelector('.quick-view-tags');
+            tagsContainer.innerHTML = '';
+            productData.tags.forEach(tag => {
+                const tagSpan = document.createElement('span');
+                tagSpan.className = 'quick-view-tag';
+                tagSpan.textContent = tag;
+                tagsContainer.appendChild(tagSpan);
+            });
+
+            const ratingContainer = modal.querySelector('.rating-stars');
+            ratingContainer.innerHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                const star = document.createElement('span');
+                star.className = i <= productData.rating ?
+                    'product-card__rating-star product-card__rating-star--filled' :
+                    'product-card__rating-star';
+                star.innerHTML = i <= productData.rating ? `{% render 'rating-star-filled' %}` : `{%- render 'rating-star' -%}`;
+                ratingContainer.appendChild(star);
+            }
+
+            modal.querySelector('.review-count').textContent =
+                `${productData.reviews_count} REVIEWS`;
+
+            modal.querySelector('.quick-view-description').textContent = productData.description;
+
+            const oldPrice = modal.querySelector('.quick-view-price-old');
+            if (productData.comparePrice && productData.comparePrice > productData.price) {
+                oldPrice.textContent = productData.comparePrice;
+                oldPrice.style.display = 'block';
+            } else {
+                oldPrice.style.display = 'none';
+            }
+
+            modal.querySelector('.quick-view-price').textContent = productData.price;
+
+            const form = modal.querySelector('.form');
+            const variantInput = form.querySelector('.product-variant-id');
+            const productInput = form.querySelector('input[name="product-id"]');
+            variantInput.value = productData.variant_id;
+            productInput.value = productData.id;
+
+            const moreDetailsButton = modal.querySelector('.custom-quick-view-more-details');
+            moreDetailsButton.href = productData.url;
+
+            const quantityInput = modal.querySelector('.quantity__input');
+            quantityInput.value = 1;
+
+            modal.style.display = 'block';
+        });
+    });
+
+    closeButton.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    const productForm = modal.querySelector('.form');
+    productForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(productForm);
+
+        try {
+            const response = await fetch('/cart/add', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                modal.style.display = 'none';
+                document.dispatchEvent(new Event('cart:updated'));
+            } else {
+                throw new Error('Ошибка добавления в корзину');
+            }
+        } catch (error) {
+            console.error('Ошибка:', error);
+        }
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+</script>
+
 <script src="{{ 'custom-timer.js' |  asset_url }}" defer="defer"></script>
 <script src="{{ 'custom-tabs.js' |  asset_url }}" defer="defer"></script>
-<script src="{{ 'custom-modal-product.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'custom-slider.js' |  asset_url }}" defer="defer"></script>
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
   {
@@ -458,7 +592,7 @@
         "max": 20,
         "step": 1,
         "label": "Limit of products to display",
-        "default": 8
+        "default": 14
       },
       {
         "type": "checkbox",

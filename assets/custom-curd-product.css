@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
 .product-card {
     position: relative;
     background: #FFFFFF;
@@ -62,7 +63,7 @@
     font-weight: 700;
     font-size: 12px;
     line-height: 100%;
-    letter-spacing: 0%;
+    text-align: center;
     text-transform: uppercase;
     border-radius: 30px;
     padding: 5px 15px;
@@ -109,7 +110,7 @@
 .product-card__vendor {
     color: #685A5C;
     margin-bottom: 9px;
-    font-family: 'Test Tiempos Headline', sans-serif;
+    font-family: 'TestTiempos', sans-serif;
     font-weight: 400;
     font-style: italic;
     font-size: 14px;
@@ -195,66 +196,8 @@
 }
 
 @media (max-width: 768px) {
-    .product-card__image {
-        height: 250px;
-    }
-
-    .product-card__title {
-        font-size: 16px;
-    }
-
-    .product-card__description {
-        font-size: 11px;
-    }
-
-    .product-card__price--old {
-        font-size: 12px;
-    }
-
-    .product-card__price--current {
-        font-size: 14px;
-    }
-
-    .product-card__rating-star {
-        font-size: 12px;
-    }
-
-    .product-card__rating-count {
-        font-size: 10px;
-    }
-}
-
-@media (max-width: 480px) {
-    .product-card__image {
-        height: 200px;
-    }
-
-    .product-card__title {
-        font-size: 14px;
-    }
-
-    .product-card__description {
-        font-size: 10px;
-    }
-
-    .product-card__price--old {
-        font-size: 11px;
-    }
-
-    .product-card__price--current {
-        font-size: 13px;
-    }
-
-    .product-card__rating-star {
-        font-size: 10px;
-    }
-
-    .product-card__rating-count {
-        font-size: 9px;
-    }
-
-    .product-card__quick-view {
-        font-size: 10px;
-        padding: 6px 12px;
+    .product-card__footer {
+        flex-direction: column;
+        gap: 20px;
     }
 }

@@ -11,6 +11,16 @@
         "name": "date_time",
         "category": "DATE_TIME"
       }
+    },
+    {
+      "key": "timer_image",
+      "namespace": "custom",
+      "name": "Timer image",
+      "description": "",
+      "type": {
+        "name": "file_reference",
+        "category": "REFERENCE"
+      }
     }
   ],
   "company": [],

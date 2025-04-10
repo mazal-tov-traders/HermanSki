@@ -106,6 +106,7 @@ custom-tabs {
     background: #F7F6F5;
     border-radius: 20px;
     width: 100%;
+    margin-top: 32px;
 }
 
 .inner-btn {
@@ -136,6 +137,7 @@ custom-tabs {
 }
 
 .quick-view-product-image {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -209,7 +211,7 @@ custom-tabs {
 .quick-view-vendor {
     color: #685A5C;
     text-transform: uppercase;
-    font-family: 'Test Tiempos Headline';
+    font-family: 'TestTiempos', sans-serif;
     font-weight: 400;
     font-style: italic;
     font-size: 14px;
@@ -285,7 +287,6 @@ custom-tabs {
 .buy-now-curd-product .quantity__button {
     background: #685A5C;
     border: none;
-    padding: 8px 12px;
     cursor: pointer;
     font-size: 16px;
 }
@@ -298,7 +299,6 @@ custom-tabs {
     width: 40px;
     text-align: center;
     border: none;
-    padding: 3px 16px;
     font-size: 16px;
     border-left: 1px solid #ECEAEB;
     border-right: 1px solid #ECEAEB;
@@ -334,6 +334,7 @@ custom-tabs {
 }
 
 .buy-now-curd-product .button {
+    all: unset;
     padding: 14.5px 20px;
     text-align: center;
     text-decoration: none;
@@ -381,6 +382,7 @@ custom-tabs {
 @media (max-width: 990px) {
     .quick-view-main {
         flex-direction: column;
+        gap: 16px;
     }
 
     .quick-view-image {
@@ -393,14 +395,18 @@ custom-tabs {
 }
 
 @media (max-width: 768px) {
+    .buy-now-curd-product .custom-button,
+    .buy-now-curd-product .button {
+        width: 100%;
+        padding: 14.5px 0;
+    }
 
     .quick-view-image {
         max-width: 100%;
-        height: 300px;
     }
 
     .quick-view-details {
-        padding: 10px 0;
+        padding: 16px;
     }
 
     .product-form__buttons {
@@ -409,18 +415,6 @@ custom-tabs {
 }
 
 @media (max-width: 480px) {
-
-    .quick-view-image {
-        height: 200px;
-    }
-
-    .quick-view-title {
-        font-size: 18px;
-    }
-
-    .quick-view-price {
-        font-size: 16px;
-    }
 
     .quantity__input {
         width: 30px;
